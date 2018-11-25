@@ -2,7 +2,7 @@
 #ifndef MSV_ONLY
 #define MSV_ONLY 
 
-enum custom_keycodes {
+enum msv_only_custom_keycodes {
     CBP_MACRO = SAFE_RANGE,
     CTC_MACRO,
     STP_MACRO,
