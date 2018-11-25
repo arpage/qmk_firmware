@@ -1,9 +1,6 @@
 #include QMK_KEYBOARD_H
 
 #include "msv.h"
-#include "action.h"
-#include "quantum.h"
-#include "process_keycode/process_tap_dance.h"
 
 //Tap dance enums
 enum {

@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdbool.h"
 
 __attribute__ ((weak))
-float fauxclicky_pressed_note[2] = MUSICAL_NOTE(_D4, 0.25);
+float fauxclicky_pressed_note[2] = MUSICAL_NOTE(_B8, 0.050);
 __attribute__ ((weak))
-float fauxclicky_released_note[2] = MUSICAL_NOTE(_C4, 0.125);
+float fauxclicky_released_note[2] = MUSICAL_NOTE(_A8, 0.025);
 __attribute__ ((weak))
-float fauxclicky_beep_note[2] = MUSICAL_NOTE(_C4, 0.25);
+float fauxclicky_beep_note[2] = MUSICAL_NOTE(_B8, 0.075);
 
 bool fauxclicky_enabled;
 

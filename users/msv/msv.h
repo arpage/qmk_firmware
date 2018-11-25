@@ -3,7 +3,6 @@
 
 #include "action.h"
 #include "quantum.h"
-
 #include "process_keycode/process_tap_dance.h"
 
 #define RGB_STA RGB_M_P //rgb static
@@ -125,8 +124,8 @@ void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
     case SINGLE_TAP:  unregister_code( kc ); break; \
     case DOUBLE_TAP:  \
       unregister_code( kc ); \
-      unregister_code( kc_shift2 ); \
       unregister_code( kc_shift1 ); \
+      unregister_code( kc_shift2 ); \
       break; \
   } \
   _##tname##_tap_state.state = 0; \

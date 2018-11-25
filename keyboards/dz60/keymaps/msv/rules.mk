@@ -1,4 +1,3 @@
-
 # Build Options
 
 BOOTMAGIC_ENABLE = yes	# Virtual DIP switch configuration(+1000)
@@ -13,6 +12,3 @@ AUDIO_ENABLE = no
 RGBLIGHT_ENABLE = yes
 
 LAYOUTS = 60_ansi 60_iso 60_hhkb
-
-TAP_DANCE_ENABLE = yes
-SRC += msv.c
