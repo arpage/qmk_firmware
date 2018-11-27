@@ -91,26 +91,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______,  _______,   _______,             KC_ACL2,                       MSE,       _______,  _______,  _______,                                _______,_______,_______  \
       )
 };
-    
+   
 // Macros to send R pointer & dplyr pipe
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     switch(id) {
         case R_POINT:
             if (record->event.pressed) { // pointer
-                SEND_STRING("<- ");
+                SEND_STRING("->");
 //                return MACRO(D(LSFT), T(COMM), U(LSFT), T(MINS), END);
             }
             break;
         case R_PIPE:
             if (record->event.pressed) { // dplyr pipe
-                SEND_STRING("%>% ");
+                SEND_STRING("{\n}\n");
 //                return MACRO(D(LSFT), T(5), T(DOT), T(5), U(LSFT), END);
             }
             break;
     }
     return MACRO_NONE;
 }
- 
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
