@@ -1,17 +1,24 @@
 
+/*
+
+   Left-handed (i.e. right side) controller for Railworks (Train Simulator 20xx)
+
+   Main persistent layer is for driving trains
+   Another persistent layer is included for using the Route/Scenario Editors
+
+*/
 #include QMK_KEYBOARD_H
 #include "msv.h"
+#include "msv_td_actions.h"
 
-#define _QWERTY 0
-#define _LOWER 1
-#define _RAISE 2
-#define _ADJUST 16
+#define _DRIVE 0 // Railworks - Drive Trains
+#define _RAISE 1
+#define _RTED  2   // Railworks - Route Editor
 
 enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LOWER,
+  DRIVE = SAFE_RANGE,
+  RTED,
   RAISE,
-  ADJUST,
 };
 
 /*
@@ -33,101 +40,75 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_QWERTY] = KEYMAP(
+  [_DRIVE] = KEYMAP(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+     _______, _______, _______, _______, _______, _______,                            KC_F1,   KC_1,    KC_2,    KC_3,  LSFT(KC_2), KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_DEL,
+     _______, _______, _______, _______, _______, _______,                            KC_TAB,  KC_SCLN, KC_W,    KC_QUOT, KC_SPC, KC_ESC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                             KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+     _______, _______, _______, _______, _______, _______,                            KC_F2,   KC_D,    KC_S,    KC_A,    KC_B,    KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_HOME,          KC_END,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     _______, _______, _______, _______, _______, _______, _______,          KC_T,    KC_Y,    KC_F,    KC_H,    KC_I,    KC_V,    KC_F12,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LCTL, KC_SPC,  RAISE,                     RAISE,   KC_ENT,  KC_LALT
-                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ),
-
-  [_RAISE] = KEYMAP(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_MINS, KC_UNDS, KC_EQL,  KC_PLUS, KC_LBRC,                            KC_RBRC, KC_HOME, KC_UP,   KC_END,  KC_MINS, KC_EQL,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KSCTL,   KC_LCTL, KC_LALT, KC_NO,   KC_LCBR,                            KC_RCBR, KC_LEFT, KC_DOWN, KC_RGHT, _______, TD(SL_CTL),
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, CTLZ,    CTLX,    CTLC,     CTLV,   CTLS,    _______,          _______, KC_BSLS, KC_PGUP, KC_RALT, KC_PGDN, _______, RESET,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, _______
+                                    _______, _______, _______,                    RAISE,   KC_Q,    KC_E
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
   
-  [_LOWER] = KEYMAP(
+  [_RTED] = KEYMAP(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
+     _______, _______, _______, _______, _______, _______,                            KC_1,     KC_2,    KC_3,    KC_4,     KC_5,   KC_6,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
+     _______, _______, _______, _______, _______, _______,                            KC_DEL,  _______, _______, _______, _______, KC_ESC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, KC_LBRC,                            KC_RBRC, KC_P4,   KC_P5,   KC_P6,   KC_PLUS, KC_PIPE,
+     _______, _______, _______, _______, _______, _______,                            KC_F2,   _______,  KC_UP,  _______, _______, KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, KC_LCBR, KC_LPRN,          KC_RPRN, KC_RCBR, KC_P1,   KC_P2,   KC_P3,   KC_MINS, _______,
+     _______, _______, _______, _______, _______, _______, _______,           DRIVE,  _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, KC_BSPC,                   KC_DEL,  _______, KC_P0
+                                    _______, _______, _______,                   KC_LCTL, KC_LSFT, LCTL(KC_LSFT)
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+    ),
+
+  [_RAISE] = KEYMAP(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______, _______, _______, _______, _______, _______,                             KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, _______, _______, _______, _______,                            KC_F3,   _______, KC_UP,   _______, _______, LCTL(KC_MINS),
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, _______, _______, _______, _______,                            KC_F4,   KC_LEFT, KC_DOWN, KC_RGHT,LSFT(KC_V),LCTL(KC_PLUS),
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, _______, _______, _______, _______, _______,            RTED,   KC_F,    KC_X,  LSFT(KC_H),_______,_______,  RESET,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                    _______, _______, _______,                   _______, _______, KC_PENT
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
-
-  [_ADJUST] = KEYMAP(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼── ──────┤
-     RGB_TOG, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_SLEP ,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     RGB_MOD, KC_MPRV, KC_MNXT, KC_VOLU, KC_PGUP, KC_UNDS,                            KC_EQL,  KC_HOME, RGB_HUI, RGB_SAI, RGB_VAI, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_MUTE, KC_MSTP, KC_MPLY, KC_VOLD, KC_PGDN, KC_MINS, KC_LPRN,          _______, KC_PLUS, KC_END,  RGB_HUD, RGB_SAD, KC_BSLS, RESET,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, _______
-                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ),
-
+  
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QWERTY:
+    case DRIVE:
       if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY);
+        set_single_persistent_default_layer(_DRIVE);
       }
       return false;
       break;
-    case LOWER:
+      
+    case RTED:
       if (record->event.pressed) {
-        layer_on(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        set_single_persistent_default_layer(_RTED);
       }
       return false;
       break;
+            
     case RAISE:
       if (record->event.pressed) {
         layer_on(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
       }
       return false;
       break;
-    case ADJUST:
-      if (record->event.pressed) {
-        layer_on(_ADJUST);
-      } else {
-        layer_off(_ADJUST);
-      }
-      return false;
-      break;
-  }
+    }
   
   #ifdef MSV_ONLY
     return msv_only_process(keycode,record);
@@ -135,3 +116,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 }
+

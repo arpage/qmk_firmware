@@ -19,21 +19,6 @@ enum {
   TRIPLE_HOLD = 7
 };
 
-//Tap dance enums
-enum {
-  RS_CTL = 0,
-  K5_CTL,
-  KC_CTL,
-  KV_CTL,
-  KZ_CTL,
-  KX_CTL,
-  KA_CTL,  
-  KS_CTL,  
-  KI_CTL,  
-//  EP_CTL,
-  SL_CTL,
-};
-
 //
 // send "kc_on_single" on a single tap, "kc_on_double" on double tap
 //
@@ -122,4 +107,49 @@ void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
   _##tname##_tap_state.state = 0; \
 }
 
+// ... this is hack ...
+//
+// send "kc_on_single" on a single tap, reset on double tap
+//
+#define TAP_STATE_RESET(tname, kc_on_single) static tap _##tname##_tap_state = { .is_press_action = true, .state = 0 }; \
+void tname##_finished (qk_tap_dance_state_t *state, void *user_data) { \
+  _##tname##_tap_state.state = cur_dance(state); \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  register_code( kc_on_single ); break; \
+    case DOUBLE_TAP: reset_keyboard(); break; \
+  } \
+} \
+void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  unregister_code( kc_on_single ); break; \
+    case DOUBLE_TAP: break;   \
+  } \
+  _##tname##_tap_state.state = 0; \
+}
+
+// ... this is also hack ...
+//
+// send "kc_on_single" on a single tap, kc_shift1 then kc on double tap
+//
+#define TAP_STATE_DUAL_SHIFTED(tname, kc_on_single, kc, kc_shift1) static tap _##tname##_tap_state = { .is_press_action = true, .state = 0 }; \
+void tname##_finished (qk_tap_dance_state_t *state, void *user_data) { \
+  _##tname##_tap_state.state = cur_dance(state); \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  register_code( kc_on_single ); break; \
+        case DOUBLE_TAP: \
+          register_code( kc_shift1 ); \
+          register_code( kc ); \
+          break; \
+  } \
+} \
+void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  unregister_code( kc_on_single ); break; \
+    case DOUBLE_TAP:  \
+      unregister_code( kc ); \
+      unregister_code( kc_shift1 ); \
+      break; \
+  } \
+  _##tname##_tap_state.state = 0; \
+}
 #endif
