@@ -127,6 +127,26 @@ void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
   _##tname##_tap_state.state = 0; \
 }
 
+// ... this is hack ...
+//
+// send "kc_on_single" on a single tap, reset on double tap
+//
+#define TAP_STATE_HXXR(tname, kc_on_single, kc_on_double) static tap _##tname##_tap_state = { .is_press_action = true, .state = 0 }; \
+void tname##_finished (qk_tap_dance_state_t *state, void *user_data) { \
+  _##tname##_tap_state.state = cur_dance(state); \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  register_code( kc_on_single ); break; \
+    case DOUBLE_TAP: register_code( KC_PSCR ); break; \
+  } \
+} \
+void tname##_reset (qk_tap_dance_state_t *state, void *user_data) { \
+  switch (_##tname##_tap_state.state) { \
+    case SINGLE_TAP:  unregister_code( kc_on_single ); break; \
+    case DOUBLE_TAP: unregister_code( KC_PSCR ); break; \
+  } \
+  _##tname##_tap_state.state = 0; \
+}
+
 // ... this is also hack ...
 //
 // send "kc_on_single" on a single tap, kc_shift1 then kc on double tap

@@ -30,11 +30,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    /* Keymap: (Base Layer) Default Layer
    */
     KEYMAP_2_SHIFTS(
-        KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,   KC_F11 ,  KC_F12 , NA_____, KC_DEL ,
-        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_HOME, KC_UP,   KC_END,    XXXXXXX,  XXXXXXX, XXXXXXX, LALT(KC_PSCR),
-        XXXXXXX,          KC_LCTL, KC_LSFT, KC_LALT, XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT ,  XXXXXXX,  XXXXXXX,          XXXXXXX,
-      _______, _______, _______, _______, _______, _______, _______, KC_PGUP, _______,   KC_PGDN,   _______,   _______, KC_INS,   KC_PGUP,   _______,
-      _______, _______, _______, _______, _______, _______, _______, _______,                                           KC_HOME,  KC_PGDOWN, KC_END),
+        KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10,   KC_F11 ,  KC_F12 , NA_____, KC_DEL ,
+        XXXXXXX,          CT(Q),   CT(W),   CT(E),   CT(R),  XXXXXXX, XXXXXXX, KC_HOME, KC_UP,   KC_END,    XXXXXXX,  XXXXXXX, XXXXXXX, LALT(KC_PSCR),
+        XXXXXXX,          CT(A),   CT(S),   CT(D),   CT(F),  XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT,   XXXXXXX,  XXXXXXX,          XXXXXXX,
+      _______, _______,   CT(Z),   CT(X),   CT(C),   CT(V),  _______, KC_DEL,  KC_PGUP, XXXXXXX, KC_PGDN,   KC_INS,   KC_INS,   KC_PGUP,   _______,
+      _______, _______, _______, _______, _______, _______, _______, _______,                                          KC_HOME, KC_PGDOWN, KC_END),
 
    /* Keymap : Third Layer (RGB / Reset)
    */
@@ -42,8 +42,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_F1  ,  KC_F2  ,  KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  ,  KC_F10 , KC_F11 , KC_F12 , NA_____, TD(SL_CTL),
         XXXXXXX,           RGB_TOG,  RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET,
         XXXXXXX,           RGB_STA,  RGB_BRE, RGB_RAI, RGB_SWI, RGB_SNA, RGB_KNI, RGB_GRA, XXXXXXX,XXXXXXX,XXXXXXX,  XXXXXXX,  XXXXXXX,
-        _______, _______,  BL_DEC ,  BL_TOGG, BL_INC , BL_STEP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX,XXXXXXX,  KC_MPRV,  KC_VOLU, KC_MNXT,
-        _______,UNA_MACRO, EMA_MACRO,CBP_MACRO,_______, CTC_MACRO,STP_MACRO,                                _______, KC_MPLY,  KC_VOLD, KC_MUTE),
+        _______, _______,  BL_DEC ,  BL_TOGG, BL_INC , BL_STEP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX,XXXXXXX,  KC_MPRV,  KC_VOLU, TD(EP_CTL),
+        _______,UNA_MACRO, EMA_MACRO,CBP_MACRO,_______, CTC_MACRO,STP_MACRO,                                _______, KC_5,     KC_VOLD, KC_BSLS),
  
 };
 

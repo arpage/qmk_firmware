@@ -51,4 +51,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   
 };
 
+#define OS_CTL OSM(MOD_LCTL)
+#define OS_ALT OSM(MOD_LALT)
+#define OS_SHA OSM(MOD_LSFT)       
+#define L1CAPS  LT(1,KC_CAPS)       //
+#define WINTL  LGUI(KC_GRAVE)      // ConEmu Restart Window
+#define COLMOD LALT(LSFT(KC_INS))  // PHPStorm Column Edit Mode
+
 #endif
