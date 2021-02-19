@@ -12,9 +12,13 @@ extern keymap_config_t keymap_config;
 #define _WOW 0
 #define _TS2019 1
 #define _TSEDIT 2
-#define _LOWER 3
-#define _RAISE 4
-#define _ADJUST 16
+#define _MAXTO 3
+//#define _LOWER 3
+//#define _RAISE 4
+//#define _ADJUST 16
+#define _LOWER 4
+#define _RAISE 16
+#define _ADJUST 20
 
 #define FC_TGT  LALT(LCTL(KC_9))
 #define TGT_FC  LALT(LCTL(KC_8))
@@ -22,11 +26,12 @@ extern keymap_config_t keymap_config;
 
 #define SFT_TAB LSFT(KC_TAB)
 
-#define LSK(x) LSFT(LCTL(KC_##x)) 
+#define LSK(x) LSFT(LCTL(KC_##x))
 enum custom_keycodes {
   WOW = SAFE_RANGE,
   TS2019,
   TSEDIT,
+  MAXTO,
   LOWER,
   RAISE,
   ADJUST,
@@ -93,6 +98,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,        KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_ENT , \
   ADJUST,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,      KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
   */
+
+/* MAXTO
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |      |      |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_MAXTO] = LAYOUT_ortho_4x12( \
+  _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______ \
+),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
